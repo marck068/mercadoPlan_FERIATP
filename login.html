@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - MercaPlan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #d4edda, #a5d6a7);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            padding: 2rem;
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .register-link {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+
+        .register-link a {
+            color: #28a745;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h3 class="text-center mb-4 text-success">Iniciar Sesión</h3>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" required>
+                    <!-- 👁 Botón que NO envía el formulario -->
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">👁️</button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Iniciar Sesión</button>
+        </form>
+
+        <!-- Enlace de registro -->
+        <div class="text-center mt-3 register-link">
+            ¿No tienes cuenta? <a href="registro.html">Regístrate</a>
+        </div>
+    </div>
+
+    <script>
+        // 👁️ Lógica para mostrar/ocultar contraseña
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+
+        togglePassword.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePassword.textContent = "🙈"; // cambia el icono
+            } else {
+                passwordInput.type = "password";
+                togglePassword.textContent = "👁️";
+            }
+        });
+
+        // 🔑 Lógica de login
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const registeredUser = localStorage.getItem('registeredUser');
+            const registeredPass = localStorage.getItem('registeredPass');
+
+            if (username === registeredUser && password === registeredPass) {
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = 'index.html';
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
+        });
+    </script>
+</body>
+
+
+</html>

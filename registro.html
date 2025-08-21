@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - MercaPlan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #d4edda, #a5d6a7);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            padding: 2rem;
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .login-link {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+
+        .login-link a {
+            color: #28a745;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h3 class="text-center mb-4 text-success">Crear Cuenta</h3>
+        <form id="registerForm">
+            <div class="mb-3">
+                <label for="newUsername" class="form-label">Usuario</label>
+                <input type="text" class="form-control" id="newUsername" required>
+            </div>
+            <div class="mb-3">
+                <label for="newEmail" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="newEmail" required>
+            </div>
+            <div class="mb-3">
+                <label for="newPassword" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="newPassword" required>
+                    <!-- 👁 Botón que NO envía el formulario -->
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">👁️</button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Registrarse</button>
+        </form>
+
+        <!-- Enlace a login -->
+        <div class="text-center mt-3 login-link">
+            ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+        </div>
+    </div>
+
+    <!-- Script de registro -->
+    <script>
+        // 👁️ Lógica para mostrar/ocultar contraseña
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("newPassword");
+
+        togglePassword.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";   // mostrar contraseña
+                togglePassword.textContent = "🙈"; // cambia icono
+            } else {
+                passwordInput.type = "password"; // ocultar contraseña
+                togglePassword.textContent = "👁️";
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('newUsername').value;
+            const email = document.getElementById('newEmail').value;
+            const password = document.getElementById('newPassword').value;
+
+            // Validación de correo simple (opcional, ya está validado por HTML5)
+            if (!email.includes('@') || !email.includes('.')) {
+                alert('Por favor ingresa un correo electrónico válido.');
+                return;
+            }
+
+            // Guardar los datos en localStorage (solo demostración)
+            localStorage.setItem('registeredUser', username);
+            localStorage.setItem('registeredEmail', email);
+            localStorage.setItem('registeredPass', password);
+
+            alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
+
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+
+</html>
