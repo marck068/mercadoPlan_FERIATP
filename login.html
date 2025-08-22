@@ -21,10 +21,13 @@
                 <input type="text" class="form-control" id="username" required>
             </div>
             <div class="mb-3">
+                <label for="email" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="password" required>
-                    <!-- 👁 Botón que NO envía el formulario -->
                     <button type="button" class="btn btn-outline-secondary" id="togglePassword">👁️</button>
                 </div>
             </div>
@@ -37,40 +40,69 @@
         </div>
     </div>
 
+    <!-- Firebase App -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+    <script type="module">
+        // Importar funciones desde los SDKs de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcsY5e7rLeLkTsf8TNnTfDizka7KmZqDQ",
+            authDomain: "hexalab-ab5ad.firebaseapp.com",
+            projectId: "hexalab-ab5ad",
+            storageBucket: "hexalab-ab5ad.firebasestorage.app",
+            messagingSenderId: "63589294275",
+            appId: "1:63589294275:web:73d3924ceede193f748276",
+            measurementId: "G-21ZT23XLVX"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Evento de login
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value; // lo guardas tú
+            const email = document.getElementById('email').value;       // Firebase usa este
+            const password = document.getElementById('password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    // Guardamos el usuario en localStorage
+                    localStorage.setItem("currentUser", username);
+
+                    alert("✅ Inicio de sesión correcto");
+                    window.location.href = "index.html"; // redirige a tu página principal
+                })
+                .catch(error => {
+                    alert("❌ Error: " + error.message);
+                });
+        });
+    </script>
+
+    <!-- Mostrar/ocultar contraseña -->
     <script>
-        // 👁️ Lógica para mostrar/ocultar contraseña
         const togglePassword = document.getElementById("togglePassword");
         const passwordInput = document.getElementById("password");
 
         togglePassword.addEventListener("click", () => {
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                togglePassword.textContent = "🙈"; // cambia el icono
+                togglePassword.textContent = "🙈";
             } else {
                 passwordInput.type = "password";
                 togglePassword.textContent = "👁️";
             }
         });
-
-        // 🔑 Lógica de login
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            const registeredUser = localStorage.getItem('registeredUser');
-            const registeredPass = localStorage.getItem('registeredPass');
-
-            if (username === registeredUser && password === registeredPass) {
-                localStorage.setItem('loggedIn', 'true');
-                window.location.href = 'index.html';
-            } else {
-                alert('Usuario o contraseña incorrectos');
-            }
-        });
     </script>
-</body>
 
+</body>
 
 </html>

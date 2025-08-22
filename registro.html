@@ -40,45 +40,65 @@
         </div>
     </div>
 
-    <!-- Script de registro -->
+    <!-- Firebase App -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+    <script type="module">
+        // Importar funciones desde los SDKs de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcsY5e7rLeLkTsf8TNnTfDizka7KmZqDQ",
+            authDomain: "hexalab-ab5ad.firebaseapp.com",
+            projectId: "hexalab-ab5ad",
+            storageBucket: "hexalab-ab5ad.firebasestorage.app",
+            messagingSenderId: "63589294275",
+            appId: "1:63589294275:web:73d3924ceede193f748276",
+            measurementId: "G-21ZT23XLVX"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Evento de registro
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('newEmail').value;
+            const password = document.getElementById('newPassword').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    alert("✅ Registro exitoso, ahora puedes iniciar sesión");
+                    window.location.href = "login.html"; // redirigir al login
+                })
+                .catch(error => {
+                    alert("❌ Error: " + error.message);
+                });
+        });
+    </script>
+
+    <!-- Mostrar/ocultar contraseña -->
     <script>
-        // 👁️ Lógica para mostrar/ocultar contraseña
         const togglePassword = document.getElementById("togglePassword");
         const passwordInput = document.getElementById("newPassword");
 
         togglePassword.addEventListener("click", () => {
             if (passwordInput.type === "password") {
-                passwordInput.type = "text";   // mostrar contraseña
-                togglePassword.textContent = "🙈"; // cambia icono
+                passwordInput.type = "text";
+                togglePassword.textContent = "🙈";
             } else {
-                passwordInput.type = "password"; // ocultar contraseña
+                passwordInput.type = "password";
                 togglePassword.textContent = "👁️";
             }
         });
-
-        document.getElementById('registerForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const username = document.getElementById('newUsername').value;
-            const email = document.getElementById('newEmail').value;
-            const password = document.getElementById('newPassword').value;
-
-            // Validación de correo simple (opcional, ya está validado por HTML5)
-            if (!email.includes('@') || !email.includes('.')) {
-                alert('Por favor ingresa un correo electrónico válido.');
-                return;
-            }
-
-            // Guardar los datos en localStorage (solo demostración)
-            localStorage.setItem('registeredUser', username);
-            localStorage.setItem('registeredEmail', email);
-            localStorage.setItem('registeredPass', password);
-
-            alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-
-            window.location.href = 'login.html';
-        });
     </script>
+
 </body>
 
 </html>

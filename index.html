@@ -17,8 +17,9 @@
             <a class="navbar-brand fw-bold" href="feria.html">MercaPlan</a>
             <div class="ms-auto d-flex gap-2">
                 <a class="btn btn-outline-primary" href="productos.html">Ver productos</a>
-                <a class="btn btn-primary" href="canasta.html">Mi Canasta</a>
-                <a class="btn btn-login" href="login.html">login</a>
+                <a class="btn btn-outline-primary" href="canasta.html">Mi Canasta</a>
+                <a class="btn btn-outline-primary" href="login.html" id="btnLogin">Login</a>
+                <button class="btn btn-danger d-none" id="btnLogout">Cerrar sesión</button>
             </div>
         </div>
     </nav>
@@ -74,6 +75,8 @@
         </div>
     </section>
 
+    <script src="static/js/navbar.js"></script>
+    <script src="static/js/login.js"></script>
     <script src="./static/js/app.js"></script>
     <script>
         function goSearch(e) {
@@ -89,6 +92,56 @@
             if (date) document.getElementById('snapDate').textContent = date;
         })();
     </script>
+    <!-- Firebase App -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcsY5e7rLeLkTsf8TNnTfDizka7KmZqDQ",
+            authDomain: "hexalab-ab5ad.firebaseapp.com",
+            projectId: "hexalab-ab5ad",
+            storageBucket: "hexalab-ab5ad.firebasestorage.app",
+            messagingSenderId: "63589294275",
+            appId: "1:63589294275:web:73d3924ceede193f748276",
+            measurementId: "G-21ZT23XLVX"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Referencias a los botones
+        const btnLogin = document.getElementById("btnLogin");
+        const btnLogout = document.getElementById("btnLogout");
+
+        // Detectar estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario logueado → mostrar "Cerrar sesión"
+                btnLogin.classList.add("d-none");
+                btnLogout.classList.remove("d-none");
+            } else {
+                // Usuario deslogueado → mostrar "Login"
+                btnLogin.classList.remove("d-none");
+                btnLogout.classList.add("d-none");
+            }
+        });
+
+        // Evento cerrar sesión
+        btnLogout.addEventListener("click", () => {
+            signOut(auth).then(() => {
+                alert("👋 Sesión cerrada");
+            }).catch((error) => {
+                console.error("Error al cerrar sesión:", error);
+            });
+        });
+    </script>
+
 </body>
 
 </html>

@@ -29,8 +29,3 @@
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
-
-.btn-login {
-  background-color: #0d6efd;
-  color: #fff;
-}
